@@ -24,7 +24,7 @@ export function EmptyState({ variant = 'no-results', onClearFilters }) {
         <button
           type="button"
           onClick={onClearFilters}
-          className="mt-2 text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
+          className="mt-2 rounded text-sm font-medium text-blue-600 hover:underline dark:text-blue-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
         >
           Clear search and filters
         </button>

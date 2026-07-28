@@ -11,6 +11,7 @@ export function ViewToggle({ layout, onLayoutChange }) {
         aria-pressed={layout === 'grid'}
         className={`
           px-3 py-1.5 text-sm font-medium
+          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 focus-visible:z-10
           ${
             layout === 'grid'
               ? 'bg-blue-600 text-white'
@@ -26,6 +27,7 @@ export function ViewToggle({ layout, onLayoutChange }) {
         aria-pressed={layout === 'list'}
         className={`
           px-3 py-1.5 text-sm font-medium border-l border-gray-300 dark:border-gray-600
+          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 focus-visible:z-10
           ${
             layout === 'list'
               ? 'bg-blue-600 text-white'

@@ -27,6 +27,7 @@ export const WithError = {
     label: 'Email',
     value: 'not-an-email',
     error: 'Please enter a valid email address.',
+    readOnly: true,
   },
 }
 

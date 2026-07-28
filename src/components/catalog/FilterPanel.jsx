@@ -18,6 +18,7 @@ export function FilterPanel({ selectedCategory, onCategoryChange }) {
             aria-pressed={selectedCategory === null}
             className={`
               w-full text-left px-2 py-1.5 rounded text-sm
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1
               ${
                 selectedCategory === null
                   ? 'bg-blue-100 text-blue-700 font-medium dark:bg-blue-900 dark:text-blue-200'
@@ -37,6 +38,7 @@ export function FilterPanel({ selectedCategory, onCategoryChange }) {
               aria-pressed={selectedCategory === category}
               className={`
                 w-full text-left px-2 py-1.5 rounded text-sm
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1
                 ${
                   selectedCategory === category
                     ? 'bg-blue-100 text-blue-700 font-medium dark:bg-blue-900 dark:text-blue-200'

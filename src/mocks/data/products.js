@@ -8,7 +8,8 @@ export const products = [
     reviewCount: 77,
     inStock: true,
     stockCount: 2,
-    image: "https://picsum.photos/seed/product1/400/400",
+    image: "https://loremflickr.com/400/400/headphones?lock=1",
+    images: ["https://loremflickr.com/600/600/headphones?lock=11", "https://loremflickr.com/600/600/headphones?lock=12", "https://loremflickr.com/600/600/headphones?lock=13"],
     description: "A portable headphones designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -20,7 +21,8 @@ export const products = [
     reviewCount: 222,
     inStock: true,
     stockCount: 31,
-    image: "https://picsum.photos/seed/product2/400/400",
+    image: "https://loremflickr.com/400/400/speaker?lock=2",
+    images: ["https://loremflickr.com/600/600/speaker?lock=21", "https://loremflickr.com/600/600/speaker?lock=22", "https://loremflickr.com/600/600/speaker?lock=23"],
     description: "A pro bluetooth speaker designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -32,7 +34,8 @@ export const products = [
     reviewCount: 95,
     inStock: true,
     stockCount: 14,
-    image: "https://picsum.photos/seed/product3/400/400",
+    image: "https://loremflickr.com/400/400/smartwatch?lock=3",
+    images: ["https://loremflickr.com/600/600/smartwatch?lock=31", "https://loremflickr.com/600/600/smartwatch?lock=32", "https://loremflickr.com/600/600/smartwatch?lock=33"],
     description: "A premium smartwatch designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -44,7 +47,8 @@ export const products = [
     reviewCount: 231,
     inStock: true,
     stockCount: 6,
-    image: "https://picsum.photos/seed/product4/400/400",
+    image: "https://loremflickr.com/400/400/powerbank?lock=4",
+    images: ["https://loremflickr.com/600/600/powerbank?lock=41", "https://loremflickr.com/600/600/powerbank?lock=42", "https://loremflickr.com/600/600/powerbank?lock=43"],
     description: "A pro power bank designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -56,7 +60,8 @@ export const products = [
     reviewCount: 53,
     inStock: true,
     stockCount: 24,
-    image: "https://picsum.photos/seed/product5/400/400",
+    image: "https://loremflickr.com/400/400/webcam?lock=5",
+    images: ["https://loremflickr.com/600/600/webcam?lock=51", "https://loremflickr.com/600/600/webcam?lock=52", "https://loremflickr.com/600/600/webcam?lock=53"],
     description: "A everyday webcam designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -68,7 +73,8 @@ export const products = [
     reviewCount: 432,
     inStock: true,
     stockCount: 17,
-    image: "https://picsum.photos/seed/product6/400/400",
+    image: "https://loremflickr.com/400/400/keyboard?lock=6",
+    images: ["https://loremflickr.com/600/600/keyboard?lock=61", "https://loremflickr.com/600/600/keyboard?lock=62", "https://loremflickr.com/600/600/keyboard?lock=63"],
     description: "A classic keyboard designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -80,7 +86,8 @@ export const products = [
     reviewCount: 838,
     inStock: true,
     stockCount: 34,
-    image: "https://picsum.photos/seed/product7/400/400",
+    image: "https://loremflickr.com/400/400/computermouse?lock=7",
+    images: ["https://loremflickr.com/600/600/computermouse?lock=71", "https://loremflickr.com/600/600/computermouse?lock=72", "https://loremflickr.com/600/600/computermouse?lock=73"],
     description: "A wireless mouse designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -92,7 +99,8 @@ export const products = [
     reviewCount: 384,
     inStock: true,
     stockCount: 11,
-    image: "https://picsum.photos/seed/product8/400/400",
+    image: "https://loremflickr.com/400/400/monitor?lock=8",
+    images: ["https://loremflickr.com/600/600/monitor?lock=81", "https://loremflickr.com/600/600/monitor?lock=82", "https://loremflickr.com/600/600/monitor?lock=83"],
     description: "A wireless monitor stand designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -104,7 +112,8 @@ export const products = [
     reviewCount: 636,
     inStock: true,
     stockCount: 2,
-    image: "https://picsum.photos/seed/product9/400/400",
+    image: "https://loremflickr.com/400/400/usbhub?lock=9",
+    images: ["https://loremflickr.com/600/600/usbhub?lock=91", "https://loremflickr.com/600/600/usbhub?lock=92", "https://loremflickr.com/600/600/usbhub?lock=93"],
     description: "A compact usb-c hub designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -116,7 +125,8 @@ export const products = [
     reviewCount: 324,
     inStock: true,
     stockCount: 48,
-    image: "https://picsum.photos/seed/product10/400/400",
+    image: "https://loremflickr.com/400/400/tshirt?lock=10",
+    images: ["https://loremflickr.com/600/600/tshirt?lock=101", "https://loremflickr.com/600/600/tshirt?lock=102", "https://loremflickr.com/600/600/tshirt?lock=103"],
     description: "A classic t-shirt designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -128,7 +138,8 @@ export const products = [
     reviewCount: 257,
     inStock: true,
     stockCount: 18,
-    image: "https://picsum.photos/seed/product11/400/400",
+    image: "https://loremflickr.com/400/400/hoodie?lock=11",
+    images: ["https://loremflickr.com/600/600/hoodie?lock=111", "https://loremflickr.com/600/600/hoodie?lock=112", "https://loremflickr.com/600/600/hoodie?lock=113"],
     description: "A essential hoodie designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -140,7 +151,8 @@ export const products = [
     reviewCount: 310,
     inStock: true,
     stockCount: 35,
-    image: "https://picsum.photos/seed/product12/400/400",
+    image: "https://loremflickr.com/400/400/denimjacket?lock=12",
+    images: ["https://loremflickr.com/600/600/denimjacket?lock=121", "https://loremflickr.com/600/600/denimjacket?lock=122", "https://loremflickr.com/600/600/denimjacket?lock=123"],
     description: "A wireless denim jacket designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -152,7 +164,8 @@ export const products = [
     reviewCount: 297,
     inStock: true,
     stockCount: 27,
-    image: "https://picsum.photos/seed/product13/400/400",
+    image: "https://loremflickr.com/400/400/runningshoes?lock=13",
+    images: ["https://loremflickr.com/600/600/runningshoes?lock=131", "https://loremflickr.com/600/600/runningshoes?lock=132", "https://loremflickr.com/600/600/runningshoes?lock=133"],
     description: "A pro running shoes designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -164,7 +177,8 @@ export const products = [
     reviewCount: 171,
     inStock: true,
     stockCount: 25,
-    image: "https://picsum.photos/seed/product14/400/400",
+    image: "https://loremflickr.com/400/400/beanie?lock=14",
+    images: ["https://loremflickr.com/600/600/beanie?lock=141", "https://loremflickr.com/600/600/beanie?lock=142", "https://loremflickr.com/600/600/beanie?lock=143"],
     description: "A everyday beanie designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -176,7 +190,8 @@ export const products = [
     reviewCount: 687,
     inStock: true,
     stockCount: 1,
-    image: "https://picsum.photos/seed/product15/400/400",
+    image: "https://loremflickr.com/400/400/socks?lock=15",
+    images: ["https://loremflickr.com/600/600/socks?lock=151", "https://loremflickr.com/600/600/socks?lock=152", "https://loremflickr.com/600/600/socks?lock=153"],
     description: "A portable socks pack designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -188,7 +203,8 @@ export const products = [
     reviewCount: 351,
     inStock: true,
     stockCount: 19,
-    image: "https://picsum.photos/seed/product16/400/400",
+    image: "https://loremflickr.com/400/400/joggers?lock=16",
+    images: ["https://loremflickr.com/600/600/joggers?lock=161", "https://loremflickr.com/600/600/joggers?lock=162", "https://loremflickr.com/600/600/joggers?lock=163"],
     description: "A compact joggers designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -200,7 +216,8 @@ export const products = [
     reviewCount: 73,
     inStock: true,
     stockCount: 28,
-    image: "https://picsum.photos/seed/product17/400/400",
+    image: "https://loremflickr.com/400/400/jacket?lock=17",
+    images: ["https://loremflickr.com/600/600/jacket?lock=171", "https://loremflickr.com/600/600/jacket?lock=172", "https://loremflickr.com/600/600/jacket?lock=173"],
     description: "A portable windbreaker designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -212,7 +229,8 @@ export const products = [
     reviewCount: 69,
     inStock: true,
     stockCount: 41,
-    image: "https://picsum.photos/seed/product18/400/400",
+    image: "https://loremflickr.com/400/400/cap?lock=18",
+    images: ["https://loremflickr.com/600/600/cap?lock=181", "https://loremflickr.com/600/600/cap?lock=182", "https://loremflickr.com/600/600/cap?lock=183"],
     description: "A compact baseball cap designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -224,7 +242,8 @@ export const products = [
     reviewCount: 700,
     inStock: true,
     stockCount: 35,
-    image: "https://picsum.photos/seed/product19/400/400",
+    image: "https://loremflickr.com/400/400/blender?lock=19",
+    images: ["https://loremflickr.com/600/600/blender?lock=191", "https://loremflickr.com/600/600/blender?lock=192", "https://loremflickr.com/600/600/blender?lock=193"],
     description: "A premium blender designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -236,7 +255,8 @@ export const products = [
     reviewCount: 358,
     inStock: true,
     stockCount: 41,
-    image: "https://picsum.photos/seed/product20/400/400",
+    image: "https://loremflickr.com/400/400/coffeemaker?lock=20",
+    images: ["https://loremflickr.com/600/600/coffeemaker?lock=201", "https://loremflickr.com/600/600/coffeemaker?lock=202", "https://loremflickr.com/600/600/coffeemaker?lock=203"],
     description: "A essential coffee maker designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -248,7 +268,8 @@ export const products = [
     reviewCount: 122,
     inStock: true,
     stockCount: 38,
-    image: "https://picsum.photos/seed/product21/400/400",
+    image: "https://loremflickr.com/400/400/cuttingboard?lock=21",
+    images: ["https://loremflickr.com/600/600/cuttingboard?lock=211", "https://loremflickr.com/600/600/cuttingboard?lock=212", "https://loremflickr.com/600/600/cuttingboard?lock=213"],
     description: "A premium cutting board designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -260,7 +281,8 @@ export const products = [
     reviewCount: 759,
     inStock: true,
     stockCount: 7,
-    image: "https://picsum.photos/seed/product22/400/400",
+    image: "https://loremflickr.com/400/400/fryingpan?lock=22",
+    images: ["https://loremflickr.com/600/600/fryingpan?lock=221", "https://loremflickr.com/600/600/fryingpan?lock=222", "https://loremflickr.com/600/600/fryingpan?lock=223"],
     description: "A essential non-stick pan designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -272,7 +294,8 @@ export const products = [
     reviewCount: 85,
     inStock: true,
     stockCount: 30,
-    image: "https://picsum.photos/seed/product23/400/400",
+    image: "https://loremflickr.com/400/400/jars?lock=23",
+    images: ["https://loremflickr.com/600/600/jars?lock=231", "https://loremflickr.com/600/600/jars?lock=232", "https://loremflickr.com/600/600/jars?lock=233"],
     description: "A classic storage jars designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -284,7 +307,8 @@ export const products = [
     reviewCount: 841,
     inStock: true,
     stockCount: 7,
-    image: "https://picsum.photos/seed/product24/400/400",
+    image: "https://loremflickr.com/400/400/toaster?lock=24",
+    images: ["https://loremflickr.com/600/600/toaster?lock=241", "https://loremflickr.com/600/600/toaster?lock=242", "https://loremflickr.com/600/600/toaster?lock=243"],
     description: "A wireless toaster designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -296,7 +320,8 @@ export const products = [
     reviewCount: 370,
     inStock: true,
     stockCount: 25,
-    image: "https://picsum.photos/seed/product25/400/400",
+    image: "https://loremflickr.com/400/400/airfryer?lock=25",
+    images: ["https://loremflickr.com/600/600/airfryer?lock=251", "https://loremflickr.com/600/600/airfryer?lock=252", "https://loremflickr.com/600/600/airfryer?lock=253"],
     description: "A deluxe air fryer designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -308,7 +333,8 @@ export const products = [
     reviewCount: 157,
     inStock: true,
     stockCount: 10,
-    image: "https://picsum.photos/seed/product26/400/400",
+    image: "https://loremflickr.com/400/400/kitchenknife?lock=26",
+    images: ["https://loremflickr.com/600/600/kitchenknife?lock=261", "https://loremflickr.com/600/600/kitchenknife?lock=262", "https://loremflickr.com/600/600/kitchenknife?lock=263"],
     description: "A deluxe knife set designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -320,7 +346,8 @@ export const products = [
     reviewCount: 189,
     inStock: true,
     stockCount: 36,
-    image: "https://picsum.photos/seed/product27/400/400",
+    image: "https://loremflickr.com/400/400/yogamat?lock=27",
+    images: ["https://loremflickr.com/600/600/yogamat?lock=271", "https://loremflickr.com/600/600/yogamat?lock=272", "https://loremflickr.com/600/600/yogamat?lock=273"],
     description: "A classic yoga mat designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -332,7 +359,8 @@ export const products = [
     reviewCount: 381,
     inStock: true,
     stockCount: 33,
-    image: "https://picsum.photos/seed/product28/400/400",
+    image: "https://loremflickr.com/400/400/waterbottle?lock=28",
+    images: ["https://loremflickr.com/600/600/waterbottle?lock=281", "https://loremflickr.com/600/600/waterbottle?lock=282", "https://loremflickr.com/600/600/waterbottle?lock=283"],
     description: "A eco-friendly water bottle designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -344,7 +372,8 @@ export const products = [
     reviewCount: 530,
     inStock: true,
     stockCount: 43,
-    image: "https://picsum.photos/seed/product29/400/400",
+    image: "https://loremflickr.com/400/400/tent?lock=29",
+    images: ["https://loremflickr.com/600/600/tent?lock=291", "https://loremflickr.com/600/600/tent?lock=292", "https://loremflickr.com/600/600/tent?lock=293"],
     description: "A everyday camping tent designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -356,7 +385,8 @@ export const products = [
     reviewCount: 801,
     inStock: true,
     stockCount: 28,
-    image: "https://picsum.photos/seed/product30/400/400",
+    image: "https://loremflickr.com/400/400/backpack?lock=30",
+    images: ["https://loremflickr.com/600/600/backpack?lock=301", "https://loremflickr.com/600/600/backpack?lock=302", "https://loremflickr.com/600/600/backpack?lock=303"],
     description: "A everyday hiking backpack designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -368,7 +398,8 @@ export const products = [
     reviewCount: 496,
     inStock: true,
     stockCount: 5,
-    image: "https://picsum.photos/seed/product31/400/400",
+    image: "https://loremflickr.com/400/400/fitness?lock=31",
+    images: ["https://loremflickr.com/600/600/fitness?lock=311", "https://loremflickr.com/600/600/fitness?lock=312", "https://loremflickr.com/600/600/fitness?lock=313"],
     description: "A pro resistance bands designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -380,7 +411,8 @@ export const products = [
     reviewCount: 454,
     inStock: true,
     stockCount: 12,
-    image: "https://picsum.photos/seed/product32/400/400",
+    image: "https://loremflickr.com/400/400/dumbbell?lock=32",
+    images: ["https://loremflickr.com/600/600/dumbbell?lock=321", "https://loremflickr.com/600/600/dumbbell?lock=322", "https://loremflickr.com/600/600/dumbbell?lock=323"],
     description: "A deluxe dumbbell set designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -392,7 +424,8 @@ export const products = [
     reviewCount: 3,
     inStock: true,
     stockCount: 5,
-    image: "https://picsum.photos/seed/product33/400/400",
+    image: "https://loremflickr.com/400/400/bikehelmet?lock=33",
+    images: ["https://loremflickr.com/600/600/bikehelmet?lock=331", "https://loremflickr.com/600/600/bikehelmet?lock=332", "https://loremflickr.com/600/600/bikehelmet?lock=333"],
     description: "A wireless bike helmet designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -404,7 +437,8 @@ export const products = [
     reviewCount: 631,
     inStock: true,
     stockCount: 22,
-    image: "https://picsum.photos/seed/product34/400/400",
+    image: "https://loremflickr.com/400/400/book?lock=34",
+    images: ["https://loremflickr.com/600/600/book?lock=341", "https://loremflickr.com/600/600/book?lock=342", "https://loremflickr.com/600/600/book?lock=343"],
     description: "A everyday novel designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -416,7 +450,8 @@ export const products = [
     reviewCount: 155,
     inStock: true,
     stockCount: 23,
-    image: "https://picsum.photos/seed/product35/400/400",
+    image: "https://loremflickr.com/400/400/cookbook?lock=35",
+    images: ["https://loremflickr.com/600/600/cookbook?lock=351", "https://loremflickr.com/600/600/cookbook?lock=352", "https://loremflickr.com/600/600/cookbook?lock=353"],
     description: "A premium cookbook designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -428,7 +463,8 @@ export const products = [
     reviewCount: 128,
     inStock: true,
     stockCount: 29,
-    image: "https://picsum.photos/seed/product36/400/400",
+    image: "https://loremflickr.com/400/400/notebook?lock=36",
+    images: ["https://loremflickr.com/600/600/notebook?lock=361", "https://loremflickr.com/600/600/notebook?lock=362", "https://loremflickr.com/600/600/notebook?lock=363"],
     description: "A eco-friendly notebook set designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -440,7 +476,8 @@ export const products = [
     reviewCount: 494,
     inStock: true,
     stockCount: 28,
-    image: "https://picsum.photos/seed/product37/400/400",
+    image: "https://loremflickr.com/400/400/journal?lock=37",
+    images: ["https://loremflickr.com/600/600/journal?lock=371", "https://loremflickr.com/600/600/journal?lock=372", "https://loremflickr.com/600/600/journal?lock=373"],
     description: "A compact journal designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -452,7 +489,8 @@ export const products = [
     reviewCount: 353,
     inStock: true,
     stockCount: 46,
-    image: "https://picsum.photos/seed/product38/400/400",
+    image: "https://loremflickr.com/400/400/planner?lock=38",
+    images: ["https://loremflickr.com/600/600/planner?lock=381", "https://loremflickr.com/600/600/planner?lock=382", "https://loremflickr.com/600/600/planner?lock=383"],
     description: "A essential planner designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -464,7 +502,8 @@ export const products = [
     reviewCount: 26,
     inStock: true,
     stockCount: 32,
-    image: "https://picsum.photos/seed/product39/400/400",
+    image: "https://loremflickr.com/400/400/sketchbook?lock=39",
+    images: ["https://loremflickr.com/600/600/sketchbook?lock=391", "https://loremflickr.com/600/600/sketchbook?lock=392", "https://loremflickr.com/600/600/sketchbook?lock=393"],
     description: "A eco-friendly sketchbook designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -476,7 +515,8 @@ export const products = [
     reviewCount: 709,
     inStock: true,
     stockCount: 8,
-    image: "https://picsum.photos/seed/product40/400/400",
+    image: "https://loremflickr.com/400/400/skincare?lock=40",
+    images: ["https://loremflickr.com/600/600/skincare?lock=401", "https://loremflickr.com/600/600/skincare?lock=402", "https://loremflickr.com/600/600/skincare?lock=403"],
     description: "A classic face serum designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -488,7 +528,8 @@ export const products = [
     reviewCount: 661,
     inStock: true,
     stockCount: 18,
-    image: "https://picsum.photos/seed/product41/400/400",
+    image: "https://loremflickr.com/400/400/lipbalm?lock=41",
+    images: ["https://loremflickr.com/600/600/lipbalm?lock=411", "https://loremflickr.com/600/600/lipbalm?lock=412", "https://loremflickr.com/600/600/lipbalm?lock=413"],
     description: "A pro lip balm set designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -500,7 +541,8 @@ export const products = [
     reviewCount: 174,
     inStock: true,
     stockCount: 22,
-    image: "https://picsum.photos/seed/product42/400/400",
+    image: "https://loremflickr.com/400/400/hairdryer?lock=42",
+    images: ["https://loremflickr.com/600/600/hairdryer?lock=421", "https://loremflickr.com/600/600/hairdryer?lock=422", "https://loremflickr.com/600/600/hairdryer?lock=423"],
     description: "A compact hair dryer designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -512,7 +554,8 @@ export const products = [
     reviewCount: 517,
     inStock: true,
     stockCount: 48,
-    image: "https://picsum.photos/seed/product43/400/400",
+    image: "https://loremflickr.com/400/400/makeupbrush?lock=43",
+    images: ["https://loremflickr.com/600/600/makeupbrush?lock=431", "https://loremflickr.com/600/600/makeupbrush?lock=432", "https://loremflickr.com/600/600/makeupbrush?lock=433"],
     description: "A portable makeup brush set designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -524,7 +567,8 @@ export const products = [
     reviewCount: 779,
     inStock: true,
     stockCount: 49,
-    image: "https://picsum.photos/seed/product44/400/400",
+    image: "https://loremflickr.com/400/400/sunscreen?lock=44",
+    images: ["https://loremflickr.com/600/600/sunscreen?lock=441", "https://loremflickr.com/600/600/sunscreen?lock=442", "https://loremflickr.com/600/600/sunscreen?lock=443"],
     description: "A portable sunscreen designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -536,7 +580,8 @@ export const products = [
     reviewCount: 825,
     inStock: true,
     stockCount: 46,
-    image: "https://picsum.photos/seed/product45/400/400",
+    image: "https://loremflickr.com/400/400/lotion?lock=45",
+    images: ["https://loremflickr.com/600/600/lotion?lock=451", "https://loremflickr.com/600/600/lotion?lock=452", "https://loremflickr.com/600/600/lotion?lock=453"],
     description: "A classic body lotion designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -548,7 +593,8 @@ export const products = [
     reviewCount: 32,
     inStock: true,
     stockCount: 45,
-    image: "https://picsum.photos/seed/product46/400/400",
+    image: "https://loremflickr.com/400/400/buildingblocks?lock=46",
+    images: ["https://loremflickr.com/600/600/buildingblocks?lock=461", "https://loremflickr.com/600/600/buildingblocks?lock=462", "https://loremflickr.com/600/600/buildingblocks?lock=463"],
     description: "A classic building blocks designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -560,7 +606,8 @@ export const products = [
     reviewCount: 712,
     inStock: true,
     stockCount: 11,
-    image: "https://picsum.photos/seed/product47/400/400",
+    image: "https://loremflickr.com/400/400/jigsawpuzzle?lock=47",
+    images: ["https://loremflickr.com/600/600/jigsawpuzzle?lock=471", "https://loremflickr.com/600/600/jigsawpuzzle?lock=472", "https://loremflickr.com/600/600/jigsawpuzzle?lock=473"],
     description: "A premium puzzle set designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -572,7 +619,8 @@ export const products = [
     reviewCount: 360,
     inStock: true,
     stockCount: 45,
-    image: "https://picsum.photos/seed/product48/400/400",
+    image: "https://loremflickr.com/400/400/rccar?lock=48",
+    images: ["https://loremflickr.com/600/600/rccar?lock=481", "https://loremflickr.com/600/600/rccar?lock=482", "https://loremflickr.com/600/600/rccar?lock=483"],
     description: "A everyday rc car designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -584,7 +632,8 @@ export const products = [
     reviewCount: 204,
     inStock: true,
     stockCount: 29,
-    image: "https://picsum.photos/seed/product49/400/400",
+    image: "https://loremflickr.com/400/400/teddybear?lock=49",
+    images: ["https://loremflickr.com/600/600/teddybear?lock=491", "https://loremflickr.com/600/600/teddybear?lock=492", "https://loremflickr.com/600/600/teddybear?lock=493"],
     description: "A portable plush toy designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -596,7 +645,8 @@ export const products = [
     reviewCount: 4,
     inStock: true,
     stockCount: 38,
-    image: "https://picsum.photos/seed/product50/400/400",
+    image: "https://loremflickr.com/400/400/boardgame?lock=50",
+    images: ["https://loremflickr.com/600/600/boardgame?lock=501", "https://loremflickr.com/600/600/boardgame?lock=502", "https://loremflickr.com/600/600/boardgame?lock=503"],
     description: "A portable board game designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
   {
@@ -608,7 +658,8 @@ export const products = [
     reviewCount: 89,
     inStock: true,
     stockCount: 40,
-    image: "https://picsum.photos/seed/product51/400/400",
+    image: "https://loremflickr.com/400/400/artsupplies?lock=51",
+    images: ["https://loremflickr.com/600/600/artsupplies?lock=511", "https://loremflickr.com/600/600/artsupplies?lock=512", "https://loremflickr.com/600/600/artsupplies?lock=513"],
     description: "A essential art kit designed for everyday use, built with quality materials and backed by our satisfaction guarantee.",
   },
 ]

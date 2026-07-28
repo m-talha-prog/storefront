@@ -1,4 +1,5 @@
 /** @type { import('@storybook/react-vite').Preview } */
+import '../src/index.css'
 const preview = {
   parameters: {
     controls: {
@@ -18,3 +19,4 @@ const preview = {
 };
 
 export default preview;
+
