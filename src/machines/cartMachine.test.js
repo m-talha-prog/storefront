@@ -2,7 +2,6 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { createActor } from 'xstate'
 import { cartMachine } from '../machines/cartMachine'
 
-// A reusable fake product, shaped exactly like real data from products.js
 function makeProduct(overrides = {}) {
   return {
     id: 1,
@@ -17,8 +16,6 @@ function makeProduct(overrides = {}) {
 describe('cartMachine', () => {
   let actor
 
-  // Runs before EVERY test — guarantees each test starts from a fresh,
-  // untouched machine instance, so tests can never leak state into each other.
   beforeEach(() => {
     actor = createActor(cartMachine).start()
   })
@@ -60,7 +57,7 @@ describe('cartMachine', () => {
 
     actor.send({ type: 'ADD_ITEM', product })
     actor.send({ type: 'ADD_ITEM', product })
-    actor.send({ type: 'ADD_ITEM', product }) // third add — should be blocked by the limit
+    actor.send({ type: 'ADD_ITEM', product })
 
     const { context } = actor.getSnapshot()
     expect(context.items[0].quantity).toBe(2)
@@ -128,5 +125,21 @@ describe('cartMachine', () => {
     actor.send({ type: 'DISMISS_NOTIFICATION' })
 
     expect(actor.getSnapshot().context.notification).toBeNull()
+  })
+
+  it('restores a previous item list and sets an error notification on ROLLBACK', () => {
+    const product = makeProduct()
+    actor.send({ type: 'ADD_ITEM', product })
+
+    const itemsBeforeFailedChange = actor.getSnapshot().context.items
+    actor.send({ type: 'UPDATE_QUANTITY', id: product.id, quantity: 2 })
+
+    // Simulate a failed sync reverting the quantity change back to
+    // whatever the cart looked like before it happened.
+    actor.send({ type: 'ROLLBACK', items: itemsBeforeFailedChange })
+
+    const { context } = actor.getSnapshot()
+    expect(context.items[0].quantity).toBe(1)
+    expect(context.notification.type).toBe('error')
   })
 })

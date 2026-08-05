@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useCart } from '../../context/CartContext'
 import { CartLineItem } from './CartLineItem'
 import { Button } from '../ui/Button'
@@ -6,6 +7,7 @@ import { Button } from '../ui/Button'
 export function CartDrawer() {
   const { items, subtotal, isOpen, closeCart, clearCart } = useCart()
   const closeButtonRef = useRef(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (isOpen) {
@@ -26,6 +28,11 @@ export function CartDrawer() {
 
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [isOpen, closeCart])
+
+  function handleCheckout() {
+    closeCart()
+    navigate('/checkout')
+  }
 
   if (!isOpen) return null
 
@@ -79,7 +86,7 @@ export function CartDrawer() {
               <span>${subtotal.toFixed(2)}</span>
             </div>
 
-            <Button variant="primary" size="md" className="w-full">
+            <Button variant="primary" size="md" className="w-full" onClick={handleCheckout}>
               Checkout
             </Button>
 

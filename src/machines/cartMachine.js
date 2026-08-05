@@ -79,6 +79,18 @@ export const cartMachine = setup({
     dismissNotification: assign({
       notification: () => null,
     }),
+
+    // Restores a previous item list after a failed sync. Deliberately narrow —
+    // this only ever restores `items` and sets an error notification. It does
+    // NOT accept arbitrary state, so it can't be used to bypass the guards
+    // above (e.g. to smuggle in a quantity beyond stock).
+    rollbackItems: assign({
+      items: ({ event }) => event.items,
+      notification: () => ({
+        type: 'error',
+        message: 'Could not save your change — it was reverted.',
+      }),
+    }),
   },
 }).createMachine({
   id: 'cart',
@@ -110,6 +122,9 @@ export const cartMachine = setup({
         },
         DISMISS_NOTIFICATION: {
           actions: 'dismissNotification',
+        },
+        ROLLBACK: {
+          actions: 'rollbackItems',
         },
       },
     },
