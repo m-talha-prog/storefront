@@ -5,6 +5,7 @@ import { ImageGallery } from '../components/product-detail/ImageGallery'
 import { StockBadge } from '../components/product-detail/StockBadge'
 import { Button } from '../components/ui/Button'
 import { useCart } from '../context/CartContext'
+import { useInventory } from '../context/InventoryContext'
 
 export function ProductDetailPage() {
   const params = useParams()
@@ -12,6 +13,7 @@ export function ProductDetailPage() {
 
   const { product, status, error } = useProduct(productId)
   const { addItem } = useCart()
+  const { getLiveStock } = useInventory()
   const [justAdded, setJustAdded] = useState(false)
 
   function handleAddToCart() {
@@ -34,6 +36,8 @@ export function ProductDetailPage() {
       </div>
     )
   }
+
+  const liveStock = getLiveStock(product)
 
   return (
     <div className="max-w-6xl mx-auto p-4 sm:p-6">
@@ -66,7 +70,7 @@ export function ProductDetailPage() {
             ${product.price.toFixed(2)}
           </p>
 
-          <StockBadge inStock={product.inStock} stockCount={product.stockCount} />
+          <StockBadge product={product} />
 
           <p className="text-gray-600 dark:text-gray-300 mt-2">
             {product.description}
@@ -75,7 +79,7 @@ export function ProductDetailPage() {
           <Button
             variant={justAdded ? 'secondary' : 'primary'}
             size="lg"
-            disabled={!product.inStock}
+            disabled={liveStock <= 0}
             onClick={handleAddToCart}
             className="mt-4 self-start"
           >

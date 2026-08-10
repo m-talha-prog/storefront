@@ -1,4 +1,5 @@
 import { Button } from '../ui/Button'
+import { useInventory } from '../../context/InventoryContext'
 
 export function ConfirmationStep({
   items,
@@ -10,6 +11,14 @@ export function ConfirmationStep({
   onPlaceOrder,
   onBack,
 }) {
+  const { getLiveStock, status } = useInventory()
+
+  const insufficientItems = items.filter(
+    (item) => item.quantity > getLiveStock(item)
+  )
+  const hasInsufficientStock = insufficientItems.length > 0
+  const isConnectionDown = status !== 'open'
+
   return (
     <div>
       <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
@@ -22,6 +31,33 @@ export function ConfirmationStep({
           className="mb-4 rounded-md bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 px-4 py-3 text-sm text-red-700 dark:text-red-300"
         >
           {error}
+        </div>
+      )}
+
+      {hasInsufficientStock && (
+        <div
+          role="alert"
+          className="mb-4 rounded-md bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 px-4 py-3 text-sm text-red-700 dark:text-red-300"
+        >
+          <p className="font-medium mb-1">Some items need attention before you can order:</p>
+          <ul className="list-disc list-inside">
+            {insufficientItems.map((item) => (
+              <li key={item.id}>
+                {item.name} — only {getLiveStock(item)} available, you have{' '}
+                {item.quantity} in your cart
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Non-blocking — a down connection shouldn't trap the user in
+          checkout. The server-side check on order submission is the real
+          safety net; this is just an honest heads-up. */}
+      {isConnectionDown && !hasInsufficientStock && (
+        <div className="mb-4 rounded-md bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 px-4 py-3 text-sm text-amber-700 dark:text-amber-300">
+          Live stock check is temporarily unavailable — availability will be
+          confirmed when you place your order.
         </div>
       )}
 
@@ -71,6 +107,7 @@ export function ConfirmationStep({
           className="flex-1"
           onClick={onPlaceOrder}
           isLoading={isSubmitting}
+          disabled={hasInsufficientStock}
         >
           Place Order
         </Button>

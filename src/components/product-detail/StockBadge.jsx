@@ -1,4 +1,10 @@
-export function StockBadge({ inStock, stockCount }) {
+import { useInventory } from '../../context/InventoryContext'
+
+export function StockBadge({ product }) {
+  const { getLiveStock } = useInventory()
+  const stockCount = getLiveStock(product)
+  const inStock = stockCount > 0
+
   if (!inStock) {
     return (
       <span className="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-sm font-medium text-red-700 dark:bg-red-900 dark:text-red-200">

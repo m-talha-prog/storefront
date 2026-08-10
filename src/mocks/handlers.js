@@ -46,13 +46,30 @@ export const handlers = [
     return HttpResponse.json({ success: true, received: body })
   }),
 
-  // Simulates placing an order — used by the checkout machine's final
-  // "submitting" step. Also deliberately unreliable, so the confirmation
-  // step's error-handling path (returning to review instead of crashing)
-  // actually gets exercised, not just the happy path.
   http.post('/api/orders', async ({ request }) => {
     await delay(600)
     const body = await request.json()
+
+    // Authoritative stock check — this does NOT trust whatever the client's
+    // live inventory view believed. A real backend would check its own
+    // database here; this mock checks the base product data as its stand-in
+    // "source of truth." The client-side live-stock check in ConfirmationStep
+    // is a UX convenience that catches the common case early — this is the
+    // check that actually decides whether the order is valid.
+    const insufficientItem = (body.items || []).find((item) => {
+      const product = products.find((p) => p.id === item.id)
+      return !product || item.quantity > product.stockCount
+    })
+
+    if (insufficientItem) {
+      return HttpResponse.json(
+        {
+          error: `${insufficientItem.name} no longer has enough stock for this order. Please update your cart.`,
+        },
+        { status: 409 }
+      )
+    }
+
     const shouldFail = Math.random() < 0.15
 
     if (shouldFail) {
