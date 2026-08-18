@@ -1,6 +1,6 @@
-# Storefront — Weeks 1–4: Foundation → Real-Time Inventory
+# Storefront — Weeks 1–5: Foundation → Real-Time Inventory → 3D Product Viewer
 
-A responsive, accessible e-commerce storefront built with React, Vite, and Tailwind CSS — backed by a mock API, with cart and checkout logic managed by XState, optimistic UI with rollback, comprehensive validation, and real-time cross-tab inventory sync with resilient reconnection.
+A responsive, accessible e-commerce storefront built with React, Vite, and Tailwind CSS — backed by a mock API, with cart and checkout logic managed by XState, optimistic UI with rollback, comprehensive validation, real-time cross-tab inventory sync, and an accessible, performant 3D product viewer.
 
 ## What I Built
 
@@ -11,28 +11,22 @@ Mock API (MSW), Storybook-documented UI primitives, responsive product catalog w
 Accessible product detail page with a roving-tabindex image gallery, React Router, an XState-managed cart with guarded stock-limit transitions, a validated cart drawer UI, and a decoupled toast notification system.
 
 ### Week 3 — Optimistic UI & Checkout
-
-**Task 1 — Optimistic UI with automatic rollback.** Cart mutations apply instantly and sync to a mock endpoint (intentionally unreliable, ~20% failure) via a pure, dependency-injected `performOptimisticUpdate` helper — decoupled from React/fetch/XState specifically so it could be unit tested without any of them.
-
-**Task 2 — Multi-step checkout governed by XState.** A second, independent machine (`checkoutMachine.js`) drives Cart → Shipping → Payment → Confirmation → Submitting → Success, using many named states (unlike the cart's single-state-many-guards shape) since checkout genuinely has sequential modes. Order submission uses an `invoke`d `fromPromise` actor.
-
-**Task 3 — Comprehensive client-side validation.** A reusable `useFormValidation` hook backs both shipping and payment forms, with pure composable validators including a Luhn-checksum card number check and expiry-date validity. Errors appear progressively, only after a field is touched.
-
-**Task 4 — Responsive testing.** Verified across breakpoints; found and fixed a real overflow issue in the checkout step indicator at phone widths (now shows compact circles + a text summary below 640px).
-
-**Task 5 — Unit tests for optimistic update logic.** `performOptimisticUpdate` tested via mocked apply/rollback/sync functions, covering both success and failure paths and correct call ordering.
+Optimistic cart updates with automatic rollback (via a pure, unit-tested `performOptimisticUpdate` helper), a multi-step checkout flow governed by a second independent XState machine, comprehensive Luhn-validated form validation, and responsive testing that caught and fixed a real checkout step-indicator overflow bug.
 
 ### Week 4 — Real-Time WebSockets
+A WebSocket-shaped `InventorySocket` abstraction (backed by `BroadcastChannel`, since no real backend exists) with exponential-backoff reconnection, a connection status indicator, a request/resync handshake fixing a real gap where reconnecting tabs missed updates, deterministic automated tests (which caught a real overlapping-reconnect-timer bug), and a two-layer stock guard (client UX check + server-side authoritative validation) protecting checkout against stale inventory data.
 
-**Task 1 — Real-time inventory updates.** There's no real backend WebSocket server in this project, so this is built as an honest, deliberate architecture choice: `InventorySocket` exposes the same event-based interface a real WebSocket wrapper would (`connect`, `on('message', ...)`, connection status), but its transport is the browser's native `BroadcastChannel` API — the tool actually built for relaying messages between tabs of the same origin. A periodic simulated "someone else bought this" event demonstrates live updates without requiring manual action; stock changes are visible across multiple open tabs.
+### Week 5 — WebGL & 3D Product Viewer
 
-**Task 2 — Reconnection with exponential backoff + status indicator.** `InventorySocket` distinguishes an intentional `disconnect()` (never reconnects) from an unexpected drop (schedules a reconnect with `delay = min(base × 2^attempt, max)` plus jitter, to avoid many clients retrying in lockstep). A status dot in the header shows connecting/live/reconnecting/offline, with a dev-only button to trigger a test drop.
+**Task 1 — Interactive 3D product viewer.** No real per-product 3D model files exist for a 51-item mock catalog, so — consistent with every other honest placeholder decision in this project (product images, the WebSocket transport) — the viewer is a texture-mapped rotating box using each product's own real photo, built with React Three Fiber. Users drag to orbit and scroll to zoom via `OrbitControls`, toggled alongside the existing photo gallery rather than replacing it.
 
-**Task 3 — Hardened cross-tab sync.** Reconnection introduced a real gap: a tab misses every update broadcast while it was down, and `BroadcastChannel` has no message history to catch up on. Fixed with a request/resync handshake — on every successful connection open, a tab broadcasts `REQUEST_SYNC`; any other open tab with known stock data responds with a snapshot, which the reconnecting tab merges in.
+**Task 2 — Lazy loading + a matched-dimension placeholder.** The entire Three.js/R3F/drei bundle (several hundred KB) is deferred via `React.lazy()`, downloading only the moment a user clicks "3D View" — verified directly in the Network tab. A `Viewer3DSkeleton` matching the viewer's exact `h-96` dimensions prevents layout shift during the swap. Two distinct Suspense boundaries handle two genuinely different async concerns: one for the lazy-loaded *code*, one (from Task 1) for the texture *image*.
 
-**Task 4 — Automated tests for real-time behavior.** `InventorySocket` is tested with Vitest's fake timers (for deterministic backoff timing) and a mocked `Math.random` (for deterministic jitter), plus one genuine cross-instance integration test using Node's real `BroadcastChannel`. Writing these tests caught a real bug — consecutive drops before a reconnect completed could leave two overlapping reconnect timers alive — fixed by clearing any pending timeout before scheduling a new one.
+**Task 3 — WebGL-unsupported fallback.** Two layers: a preventive `isWebGLAvailable()` feature-detection check hides the "3D View" option entirely on devices that never had WebGL support (rather than offering something guaranteed to fail), and the existing Week 1 `ErrorBoundary` wraps the viewer as a runtime safety net for context failures that happen *after* the initial check passed.
 
-**Task 5 — Handling socket drops mid-checkout.** Uncovered a more fundamental gap first: cart items snapshot `stockCount` at add-time and never update, so checkout could validate against stale numbers even without any socket drop. Fixed with two layers: a client-side check comparing cart quantities against **live** inventory (blocking "Place Order" with a specific message when insufficient — a non-blocking amber notice if the connection itself is down, since a secondary real-time feature being unavailable shouldn't trap users in checkout), and a **server-side authoritative check** on order submission that re-validates stock independently of whatever the client believed, returning a `409` if a conflict is found.
+**Task 4 — Accessibility: keyboard controls + screen reader description.** Arrow keys and +/− drive the *same* spherical-coordinate camera math `OrbitControls` uses internally for mouse drag, so keyboard and mouse interaction feel identical rather than being two disconnected input models. `role="application"` hands keyboard behavior fully to the custom implementation; a screen-reader-only description explicitly reassures non-visual users that the full product information already exists elsewhere on the page, since a `<canvas>` is otherwise a black hole to assistive technology.
+
+**Task 5 — Mobile performance.** Three targeted fixes: capped device pixel ratio (`dpr={[1, 2]}` — a 3x Retina display would otherwise render 9x the pixels of a 1x screen for identical visible size), a `low-power` GPU hint, and explicit `webglcontextlost`/`webglcontextrestored` handling — necessary because mobile browsers reclaim WebGL contexts aggressively when tabs are backgrounded, and context loss does not throw a catchable error, so the Task 3 error boundary alone can't handle it. Verified via DevTools CPU throttling and confirmed on real devices.
 
 ## Tech Stack & Why
 
@@ -40,44 +34,42 @@ Accessible product detail page with a roving-tabindex image gallery, React Route
 |---|---|
 | **Vite + React** | Fast iteration, no SSR requirement |
 | **Tailwind CSS v4** | CSS-native config, class-based dark mode |
-| **MSW** | Network-level interception for REST; same handlers across dev, Storybook, tests |
+| **MSW** | Network-level interception for REST |
 | **React Router v7** | Modern data-router pattern |
-| **XState** (cart + checkout, independent machines) | Different problems, deliberately different shapes — guards-heavy vs. genuinely sequential |
-| **BroadcastChannel** (not a mocked WebSocket) | The actual browser API built for same-origin cross-tab messaging; `InventorySocket` wraps it behind a WebSocket-shaped interface so consuming code doesn't know or care about the difference |
-| **Vitest** | Reuses Vite config; runs plain unit tests and Storybook's browser-based story tests as separate "projects" from one command; fake timers + mocked randomness make backoff logic deterministically testable |
+| **XState** (cart + checkout) | Guards-heavy vs. genuinely sequential — different shapes for different problems |
+| **BroadcastChannel** | Real cross-tab API, wrapped behind a WebSocket-shaped interface |
+| **Three.js / React Three Fiber / drei** | Declarative 3D scene composition inside the existing React component tree, rather than hand-rolled imperative Three.js setup |
+| **Vitest** | Unit + Storybook story tests from one command; fake timers + mocked randomness for deterministic async/backoff testing |
 
 ## Architecture Decisions
 
-- **`InventorySocket` deliberately mimics a WebSocket's event interface while using `BroadcastChannel` internally** — an honest stand-in for a real backend that doesn't exist here, chosen so the abstraction could be swapped for a real WebSocket later without touching any consuming code.
-- **Absolute stock values are broadcast, not relative decrements** — with no real server acting as a single source of truth, relative changes risk inconsistency if two tabs independently compute a "next" value around the same time. Absolute values make last-message-wins deterministic, a documented trade-off rather than a hidden one.
-- **A request/resync handshake on every reconnect**, not just on first connect — the same lesson real WebSocket clients learn against real servers: a resumed connection must actively recover what it missed, not just trust that nothing changed while it was down.
-- **Two independent layers of stock validation at checkout** — client-side for immediate UX feedback, server-side as the actual authority — mirroring the same client-vs-source-of-truth principle used for cart quantity validation in Week 2, now applied to an even higher-stakes moment (placing an order).
-- **A secondary real-time feature going down (the socket) never blocks a critical flow (checkout)** — only the things that must be correct (the server-side check) are allowed to block; a live-updating nicety being temporarily unavailable only produces a non-blocking notice.
+- **The 3D viewer uses each product's real photo as a texture on a generic box**, rather than fictional or generic 3D assets — the same honesty applied to product images and the mock WebSocket transport, carried into a new medium.
+- **Two separate Suspense boundaries around the 3D viewer** — one for the lazily-loaded component code, one for the async-loaded texture — because they're genuinely different resources with different lifetimes (code is cached after first load; a new texture downloads per product).
+- **Keyboard controls reuse the exact spherical-coordinate math `OrbitControls` uses for mouse drag**, rather than inventing a separate keyboard-only interaction model — consistency of feel across input methods mattered more than implementation convenience.
+- **WebGL support is checked preventively AND backed by a runtime error boundary** — the same "client check + authoritative safety net" pattern used for checkout stock validation in Week 4, applied here to a browser capability instead of business data.
+- **Mobile performance fixes are the ones with well-established, predictable payoff** (pixel ratio capping, power hints, context-loss recovery) applied proactively, with real-device verification treated as confirmation rather than pure discovery — the difference between engineering judgment and guesswork.
 
 ## Project Structure
 
 ```
 src/
+├── components/
+│   └── product-detail/
+│       ├── ProductViewer3D.jsx     # R3F scene, keyboard controls, context-loss recovery
+│       ├── Viewer3DSkeleton.jsx    # matched-dimension loading placeholder
+│       └── Viewer3DFallback.jsx    # shown when WebGL unsupported or on error
+├── utils/
+│   └── webgl.js                    # isWebGLAvailable() feature detection
 ├── realtime/
-│   ├── InventorySocket.js        # WebSocket-shaped, BroadcastChannel-backed
-│   └── InventorySocket.test.js
+│   └── InventorySocket.js / .test.js
 ├── context/
 │   ├── CartContext.jsx
 │   ├── ToastContext.jsx
-│   └── InventoryContext.jsx      # live stock + resync handshake
-├── components/
-│   ├── inventory/
-│   │   └── ConnectionStatusIndicator.jsx
-│   ├── cart/
-│   ├── checkout/
-│   │   └── ConfirmationStep.jsx  # live stock check before Place Order
-│   ├── product-detail/
-│   │   └── StockBadge.jsx        # reads live stock
-│   └── ...
+│   └── InventoryContext.jsx
 ├── machines/
 │   ├── cartMachine.js / .test.js
 │   └── checkoutMachine.js
-├── hooks/ · utils/ · mocks/ · pages/
+├── hooks/ · mocks/ · pages/
 ├── router.jsx · App.jsx · main.jsx
 ```
 
@@ -92,19 +84,19 @@ npm run test          # first time: npx playwright install chromium
 
 ## Known Limitations / Next Steps
 
-- No real backend exists for WebSockets — `InventorySocket` uses `BroadcastChannel`, which only syncs tabs of the *same browser*, not across devices or real users. Swapping in a real WebSocket server later would not require changing any consuming code, by design.
-- The periodic stock-simulation timer runs independently in every open tab (no central coordinator), so update frequency scales with tab count — an accepted trade-off, not a bug.
-- Checkout does not persist across a page refresh.
-- Optimistic rollback restores a full snapshot rather than surgically undoing one operation; rapid overlapping changes could roll back further than strictly necessary in rare cases.
-- Payment fields validate realistically (including a Luhn check) but connect to no real payment processor — test values only.
-- A benign MSW console warning may appear related to the browser's own navigation request; does not affect functionality and does not occur in production.
+- The 3D viewer is a generic textured box, not a real per-product 3D scan/model — an honest placeholder given 51 mock products, not a claim of photorealistic product representation.
+- `BroadcastChannel`-based real-time sync only works across tabs of the same browser, not across devices or real users.
+- Checkout does not persist across a page refresh; optimistic rollback restores full snapshots rather than surgically undoing single operations.
+- Payment fields validate realistically (including Luhn) but connect to no real payment processor.
+- `role="application"` on the 3D viewer is the most honest available ARIA choice, not a perfect one — no standard ARIA pattern exists for a custom 3D orbit widget.
 
 ## Testing Manually
 
 | Feature | How to verify |
 |---|---|
-| Cross-tab inventory sync | Open two tabs on the same product; wait ~10s for a simulated update to appear in both |
-| Reconnection + backoff | Click "Simulate drop" (dev only) in the header; watch the status dot and reconnect delay grow with repeated clicks |
-| Cross-tab resync after reconnect | Drop Tab A, let Tab B's stock change while A is down, confirm A catches up once reconnected |
-| Checkout stock guard | Reduce a product's live stock below your cart's requested quantity, confirm "Place Order" is blocked with a specific message |
-| Server-side authority | Confirm an order is still rejected with a clear error even if the client-side check is somehow bypassed |
+| 3D viewer | Product detail → "3D View" → drag to orbit, scroll to zoom |
+| Lazy loading | DevTools Network (JS filter) → confirm R3F/drei/three chunks load only after clicking "3D View" |
+| WebGL fallback | Temporarily force `isWebGLAvailable` to return false → confirm the toggle disappears, only Photos shows |
+| Keyboard controls | Tab to the viewer, use arrow keys + / − , confirm identical motion to mouse drag |
+| Screen reader | Navigate to the viewer with a screen reader active, confirm it announces as an application with a clear description |
+| Mobile performance | DevTools device emulation + CPU throttling, or a real phone — confirm smooth rotation and clean recovery after backgrounding the tab |

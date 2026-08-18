@@ -1,11 +1,21 @@
-import { useState } from 'react'
+import { useState, lazy, Suspense } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useProduct } from '../hooks/useProduct'
 import { ImageGallery } from '../components/product-detail/ImageGallery'
 import { StockBadge } from '../components/product-detail/StockBadge'
+import { Viewer3DSkeleton } from '../components/product-detail/Viewer3DSkeleton'
+import { Viewer3DFallback } from '../components/product-detail/Viewer3DFallback'
+import { ErrorBoundary } from '../components/ErrorBoundary'
 import { Button } from '../components/ui/Button'
 import { useCart } from '../context/CartContext'
 import { useInventory } from '../context/InventoryContext'
+import { isWebGLAvailable } from '../utils/webgl'
+
+const ProductViewer3D = lazy(() =>
+  import('../components/product-detail/ProductViewer3D').then((module) => ({
+    default: module.ProductViewer3D,
+  }))
+)
 
 export function ProductDetailPage() {
   const params = useParams()
@@ -15,6 +25,11 @@ export function ProductDetailPage() {
   const { addItem } = useCart()
   const { getLiveStock } = useInventory()
   const [justAdded, setJustAdded] = useState(false)
+  const [viewMode, setViewMode] = useState('photos') // 'photos' | '3d'
+
+  // Computed once per mount — WebGL support doesn't change mid-session, so
+  // there's no reason to re-check it on every render.
+  const [webglSupported] = useState(() => isWebGLAvailable())
 
   function handleAddToCart() {
     addItem(product)
@@ -49,7 +64,62 @@ export function ProductDetailPage() {
       </Link>
 
       <div className="grid sm:grid-cols-2 gap-8">
-        <ImageGallery images={product.images} productName={product.name} />
+        <div>
+          {/* Don't offer an option that will never work — the toggle only
+              appears at all when WebGL is genuinely available. */}
+          {webglSupported && (
+            <div
+              role="group"
+              aria-label="Product view mode"
+              className="inline-flex rounded-md border border-gray-300 dark:border-gray-600 overflow-hidden mb-3"
+            >
+              <button
+                type="button"
+                onClick={() => setViewMode('photos')}
+                aria-pressed={viewMode === 'photos'}
+                className={`px-3 py-1.5 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                  viewMode === 'photos'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
+                }`}
+              >
+                Photos
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('3d')}
+                aria-pressed={viewMode === '3d'}
+                className={`px-3 py-1.5 text-sm font-medium border-l border-gray-300 dark:border-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                  viewMode === '3d'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
+                }`}
+              >
+                3D View
+              </button>
+            </div>
+          )}
+
+          {viewMode === '3d' && webglSupported ? (
+            <>
+              <ErrorBoundary
+                fallback={
+                  <Viewer3DFallback onBackToPhotos={() => setViewMode('photos')} />
+                }
+              >
+                <Suspense fallback={<Viewer3DSkeleton />}>
+                  <ProductViewer3D imageUrl={product.image} productName={product.name} />
+                </Suspense>
+              </ErrorBoundary>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                Drag to rotate • Scroll to zoom • Click the viewer, then use
+                arrow keys to rotate and +/− to zoom
+              </p>
+            </>
+          ) : (
+            <ImageGallery images={product.images} productName={product.name} />
+          )}
+        </div>
 
         <div className="flex flex-col gap-3">
           <span className="text-sm text-gray-500 dark:text-gray-400">
