@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "vitest run"
+    "test": "vitest run",
+    "analyze": "vite build",
+    "size": "size-limit"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",
@@ -27,6 +29,7 @@
   "devDependencies": {
     "@chromatic-com/storybook": "^5.2.1",
     "@eslint/js": "^10.0.1",
+    "@size-limit/file": "^13.0.3",
     "@storybook/addon-a11y": "^10.5.0",
     "@storybook/addon-docs": "^10.5.0",
     "@storybook/addon-mcp": "^0.7.0",
@@ -45,9 +48,13 @@
     "msw": "^2.15.0",
     "playwright": "^1.61.1",
     "prop-types": "^15.8.1",
+    "rollup-plugin-visualizer": "^7.1.1",
+    "size-limit": "^13.0.3",
     "storybook": "^10.5.0",
     "vite": "^8.1.1",
-    "vitest": "^4.1.10"
+    "vite-plugin-pwa": "^1.3.0",
+    "vitest": "^4.1.10",
+    "workbox-window": "^7.4.1"
   },
   "msw": {
     "workerDirectory": [
