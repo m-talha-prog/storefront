@@ -4,7 +4,16 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>storefront</title>
+    <!-- Nearly every product image comes from these two hosts — preconnect
+         so the LCP image's connection (DNS + TLS) is already warm by the
+         time React resolves the mock API response and sets its src. -->
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+    <link rel="preconnect" href="https://plus.unsplash.com" crossorigin />
+    <title>Storefront — Shop Electronics & More</title>
+    <meta
+      name="description"
+      content="A fast, accessible e-commerce storefront with live inventory, an interactive 3D product viewer, and offline support."
+    />
   </head>
   <body>
     <div id="root"></div>

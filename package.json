@@ -3,6 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+
+  "overrides": {
+  "aria-query": "5.1.3"
+},
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -12,7 +16,8 @@
     "build-storybook": "storybook build",
     "test": "vitest run",
     "analyze": "vite build",
-    "size": "size-limit"
+    "size": "size-limit",
+    "lighthouse": "lhci autorun"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",
@@ -54,7 +59,8 @@
     "vite": "^8.1.1",
     "vite-plugin-pwa": "^1.3.0",
     "vitest": "^4.1.10",
-    "workbox-window": "^7.4.1"
+    "workbox-window": "^7.4.1",
+    "@lhci/cli": "^0.15.1"
   },
   "msw": {
     "workerDirectory": [

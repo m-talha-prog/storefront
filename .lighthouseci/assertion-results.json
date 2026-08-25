@@ -1,0 +1,19 @@
+[
+  {
+    "name": "minScore",
+    "expected": 1,
+    "actual": 0.5,
+    "values": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "uses-responsive-images",
+    "level": "error",
+    "url": "http://localhost:4173/",
+    "auditTitle": "Properly size images",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/uses-responsive-images/"
+  }
+]

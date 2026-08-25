@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '../ui/Button'
 import { useCart } from '../../context/CartContext'
+import { getResponsiveImageProps, CARD_IMAGE_WIDTHS } from '../../utils/responsiveImage'
 
-export function ProductCard({ product, layout = 'grid' }) {
+export function ProductCard({ product, layout = 'grid', priority = false }) {
   const isList = layout === 'list'
   const { addItem } = useCart()
   const [justAdded, setJustAdded] = useState(false)
@@ -24,9 +25,17 @@ export function ProductCard({ product, layout = 'grid' }) {
     >
       <Link to={`/products/${product.id}`} className={isList ? 'shrink-0' : ''}>
         <img
-          src={product.image}
+          {...getResponsiveImageProps(
+            product.image,
+            CARD_IMAGE_WIDTHS,
+            isList ? '128px' : '(min-width: 640px) 33vw, 50vw'
+          )}
           alt={product.name}
-          loading="lazy"
+          width={isList ? 128 : 320}
+          height={isList ? 128 : 160}
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : 'auto'}
+          decoding="async"
           className={isList ? 'w-32 h-32 object-cover' : 'w-full h-40 object-cover'}
         />
       </Link>

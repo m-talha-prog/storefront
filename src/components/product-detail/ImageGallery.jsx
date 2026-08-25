@@ -1,4 +1,9 @@
 import { useRef, useState } from 'react'
+import {
+  getResponsiveImageProps,
+  GALLERY_IMAGE_WIDTHS,
+  THUMBNAIL_IMAGE_WIDTHS,
+} from '../../utils/responsiveImage'
 
 export function ImageGallery({ images, productName }) {
   const [activeIndex, setActiveIndex] = useState(0)
@@ -23,8 +28,20 @@ export function ImageGallery({ images, productName }) {
   return (
     <div className="flex flex-col gap-3">
       <img
-        src={images[activeIndex]}
+        {...getResponsiveImageProps(
+          images[activeIndex],
+          GALLERY_IMAGE_WIDTHS,
+          '(min-width: 1024px) 500px, 90vw'
+        )}
         alt={`${productName} — view ${activeIndex + 1} of ${images.length}`}
+        width={600}
+        height={600}
+        // This is the LCP element on the product detail page — load it
+        // eagerly at high priority rather than lazily, unlike the
+        // thumbnails below it.
+        loading="eager"
+        fetchPriority="high"
+        decoding="async"
         className="w-full aspect-square object-cover rounded-lg border border-gray-200 dark:border-gray-700"
       />
 
@@ -54,8 +71,12 @@ export function ImageGallery({ images, productName }) {
             `}
           >
             <img
-              src={src}
+              {...getResponsiveImageProps(src, THUMBNAIL_IMAGE_WIDTHS, '64px')}
               alt=""
+              width={64}
+              height={64}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover"
             />
           </button>

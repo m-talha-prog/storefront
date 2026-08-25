@@ -1,4 +1,4 @@
-# Storefront — Weeks 1–5: Foundation → Real-Time Inventory → 3D Product Viewer
+# Storefront — Weeks 1–6: Foundation → Real-Time Inventory → 3D Product Viewer → Performance & PWA
 
 A responsive, accessible e-commerce storefront built with React, Vite, and Tailwind CSS — backed by a mock API, with cart and checkout logic managed by XState, optimistic UI with rollback, comprehensive validation, real-time cross-tab inventory sync, and an accessible, performant 3D product viewer.
 
@@ -27,6 +27,18 @@ A WebSocket-shaped `InventorySocket` abstraction (backed by `BroadcastChannel`, 
 **Task 4 — Accessibility: keyboard controls + screen reader description.** Arrow keys and +/− drive the *same* spherical-coordinate camera math `OrbitControls` uses internally for mouse drag, so keyboard and mouse interaction feel identical rather than being two disconnected input models. `role="application"` hands keyboard behavior fully to the custom implementation; a screen-reader-only description explicitly reassures non-visual users that the full product information already exists elsewhere on the page, since a `<canvas>` is otherwise a black hole to assistive technology.
 
 **Task 5 — Mobile performance.** Three targeted fixes: capped device pixel ratio (`dpr={[1, 2]}` — a 3x Retina display would otherwise render 9x the pixels of a 1x screen for identical visible size), a `low-power` GPU hint, and explicit `webglcontextlost`/`webglcontextrestored` handling — necessary because mobile browsers reclaim WebGL contexts aggressively when tabs are backgrounded, and context loss does not throw a catchable error, so the Task 3 error boundary alone can't handle it. Verified via DevTools CPU throttling and confirmed on real devices.
+
+### Week 6 — Performance, PWA & Production Readiness
+
+**Task 1 — Installable, offline-capable PWA.** `vite-plugin-pwa` generates a manifest and a Workbox service worker: stale-while-revalidate for the mock `/api/*` routes, cache-first for product images (30-day expiry, capped entry count). A `PWAUpdatePrompt` component surfaces a *persistent* banner — not an auto-dismissing toast — when a new version is ready, because "reload now vs. keep working" is a decision the user has to actually make, plus a background check every hour for tabs left open a long time.
+
+**Task 2 — Route-based code splitting + bundle budgets.** `CatalogPage`, `ProductDetailPage`, and `CheckoutPage` are each `React.lazy()`-loaded in `router.jsx` behind one `Suspense` boundary in `App.jsx`, so visiting the catalog no longer downloads checkout's code. `.size-limit.cjs` sets enforceable KB budgets per chunk (checked via `npm run size`), and `rollup-plugin-visualizer` emits a `dist/stats.html` treemap on every build to see exactly what's contributing to bundle weight.
+
+**Task 3 — Image optimization.** This is a Vite SPA, not Next.js, so there's no `next/image` pipeline — optimization is manual `srcset`/`sizes`, built in `src/utils/responsiveImage.js`. Product photos come from Unsplash, which accepts a `w=` query param and does content negotiation via `auto=format` (serves AVIF/WebP automatically based on `Accept` headers — real next-gen-format delivery, no extra tooling required). The catalog's first row and the product-detail hero image (the LCP candidates on their respective pages) load eagerly at `fetchPriority="high"`; everything else stays `loading="lazy"`. Two `<link rel="preconnect">` hints in `index.html` warm the connection to Unsplash's hosts before React even resolves the mock API response. iStock-hosted images (a minority of the catalog) don't expose a documented resize param, so they fall back to a plain `src` rather than guessing at an API that isn't ours to rely on.
+
+**Task 4 — Lighthouse CI.** `lighthouserc.cjs` builds the production bundle, serves it via `vite preview`, and runs 3 Lighthouse passes (median reported) against `http://localhost:4173/`. Performance, accessibility, LCP, CLS, and TBT are asserted as hard errors; best-practices/SEO as warnings. Three responsive-image-specific audits (`uses-responsive-images`, `offscreen-images`, `unsized-images`) are asserted at `minScore: 1` so a future change that reintroduces an unoptimized image fails CI immediately instead of quietly regressing. Run it with `npm run lighthouse`.
+
+**Task 5 — README finalized.** Setup instructions and a performance-benchmark section added below.
 
 ## Tech Stack & Why
 
@@ -59,7 +71,8 @@ src/
 │       ├── Viewer3DSkeleton.jsx    # matched-dimension loading placeholder
 │       └── Viewer3DFallback.jsx    # shown when WebGL unsupported or on error
 ├── utils/
-│   └── webgl.js                    # isWebGLAvailable() feature detection
+│   ├── webgl.js                    # isWebGLAvailable() feature detection
+│   └── responsiveImage.js          # srcset/sizes builder for Unsplash-hosted images
 ├── realtime/
 │   └── InventorySocket.js / .test.js
 ├── context/
@@ -73,14 +86,38 @@ src/
 ├── router.jsx · App.jsx · main.jsx
 ```
 
-## Running the Project
+## Setup Instructions
+
+**Prerequisites:** Node.js 20+ and npm.
 
 ```bash
+git clone <this repo's URL>
+cd storefront
 npm install
-npm run dev
-npm run storybook
-npm run test          # first time: npx playwright install chromium
 ```
+
+| Command | What it does |
+|---|---|
+| `npm run dev` | Starts the Vite dev server (mock API via MSW). |
+| `npm run build` | Production build to `dist/` (also emits `dist/stats.html`, a bundle treemap). |
+| `npm run preview` | Serves the `dist/` build locally, as production would. |
+| `npm run storybook` | Starts Storybook for the UI primitives in `src/components/ui`. |
+| `npm run test` | Runs unit + Storybook-story tests via Vitest. First run: `npx playwright install chromium`. |
+| `npm run size` | Checks bundle sizes against the budgets in `.size-limit.cjs`. |
+| `npm run lighthouse` | Builds, serves, and runs Lighthouse CI (see below). First run: `npx playwright install chromium` if not already installed — Lighthouse needs a Chromium binary, and this project already depends on Playwright's, so no separate download is required. Set `CHROME_PATH` to that binary if Lighthouse can't find a system Chrome automatically. |
+
+## Performance Benchmarks
+
+Generated with `npm run lighthouse` (desktop preset — see the reasoning in `lighthouserc.cjs` for why desktop, not mobile, is the honest target for a project shipping a Three.js 3D viewer). Numbers below are from a run in this project's own sandboxed dev environment, **where outbound requests to Unsplash/iStock (the product image CDNs) are blocked by the sandbox's network policy** — every product image failed to load (403), which understates real image payload and overstates the score. Treat the table below as "the pipeline works end-to-end," not as the real-world number.
+
+| Category | Score (this sandbox, images blocked) |
+|---|---|
+| Performance | 99–100 |
+| Accessibility | 96 |
+| Best Practices | 96 |
+| SEO | 100 |
+
+**To get a trustworthy number:** run `npm run lighthouse` on a machine with normal internet access, so the actual product images download. Paste the real scores here afterward. One known, real (not sandbox-artifact) gap already caught: a low-contrast review-count `<span>` on `ProductCard` (`text-gray-400` on white, ratio 2.6:1 against a 4.5:1 requirement) — worth a follow-up Tailwind class change, not fixed here since it wasn't part of this week's scope.
 
 ## Known Limitations / Next Steps
 
@@ -89,6 +126,8 @@ npm run test          # first time: npx playwright install chromium
 - Checkout does not persist across a page refresh; optimistic rollback restores full snapshots rather than surgically undoing single operations.
 - Payment fields validate realistically (including Luhn) but connect to no real payment processor.
 - `role="application"` on the 3D viewer is the most honest available ARIA choice, not a perfect one — no standard ARIA pattern exists for a custom 3D orbit widget.
+- Responsive `srcset` generation only works for Unsplash-hosted images (the majority of the catalog); iStock-hosted images serve a single fixed size since iStock doesn't expose a documented resize param.
+- A real low-contrast text issue (`ProductCard`'s review-count span) was surfaced by the Lighthouse accessibility audit and is tracked but not yet fixed.
 
 ## Testing Manually
 

@@ -74,8 +74,16 @@ export function CatalogPage() {
                     : 'flex flex-col gap-4'
                 }
               >
-                {products.map((product) => (
-                  <ProductCard key={product.id} product={product} layout={layout} />
+                {products.map((product, index) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    layout={layout}
+                    // First row is the LCP candidate on this page — load it
+                    // eagerly at high priority instead of lazily, same as
+                    // every other card below the fold.
+                    priority={index < 3}
+                  />
                 ))}
               </div>
             )}
