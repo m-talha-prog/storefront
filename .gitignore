@@ -34,3 +34,9 @@ storybook-static
 # Test artifacts
 test-results/
 playwright-report/
+
+# Lighthouse CI output
+.lighthouseci/
+
+# Production build
+dist/
