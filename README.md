@@ -432,7 +432,7 @@ The project demonstrates six progressive development stages:
 
 ## Author
 
-**Malik Talha**
+**Muhammad Talha**
 
 Computer Science | Frontend & AI Application Development
 
