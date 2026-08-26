@@ -1,659 +1,445 @@
-Storefront
+# Storefront — Modern E-Commerce Frontend
 
-Production-minded React E-Commerce Frontend
+A production-oriented e-commerce storefront built with **React, Vite, and Tailwind CSS**, designed to demonstrate modern frontend engineering practices across state management, accessibility, real-time UI synchronization, 3D interaction, performance optimization, and progressive web capabilities.
 
-A responsive, accessible e-commerce storefront built with React, Vite, and Tailwind CSS, featuring a mock REST API, XState-powered cart and checkout flows, optimistic UI with rollback, cross-tab inventory synchronization, an accessible 3D product viewer, route-based code splitting, image optimization, bundle budgets, Lighthouse CI, and PWA support.
+> **Portfolio project:** This application uses a mock API and simulated infrastructure where a production backend or third-party service is not available. The implementation focuses on demonstrating robust frontend architecture and engineering practices rather than pretending to provide production infrastructure that does not exist.
 
-🔗 Live Demo & Repository
+---
 
-Live Demo: https://storefront-sepia-delta.vercel.app/
+## Overview
 
-GitHub: https://github.com/m-talha-prog/storefront
+Storefront is a responsive e-commerce application developed progressively from a basic product catalog into a feature-rich frontend application.
 
-✨ Highlights
+The project demonstrates:
 
-🛍️ Responsive product catalog with search, filtering, grid/list views, skeleton states, and empty states
+* Responsive product discovery and filtering
+* Product detail pages and image galleries
+* Shopping cart and multi-step checkout
+* Optimistic UI with rollback
+* State machines for complex application flows
+* Cross-tab inventory synchronization
+* Interactive 3D product visualization
+* WebGL capability detection and fallbacks
+* Route-based code splitting
+* Responsive image delivery
+* Progressive Web App functionality
+* Accessibility-focused interactions
+* Automated testing
+* Bundle-size budgets
+* Lighthouse-based performance validation
 
-🛒 XState-managed cart with guarded stock-limit transitions
+The application currently contains a **51-product mock catalog** and uses MSW for API simulation.
 
-💳 Multi-step checkout state machine with validated forms
+---
 
-⚡ Optimistic cart updates with automatic rollback
+## Key Features
 
-🔄 Cross-tab inventory synchronization using BroadcastChannel
+### 🛍️ E-Commerce Experience
 
-🧩 WebSocket-shaped inventory abstraction with reconnection and resync handling
+* Product catalog with search and filtering
+* Grid/list product views
+* Product detail pages
+* Responsive image gallery
+* Shopping cart
+* Stock-aware cart interactions
+* Multi-step checkout
+* Form validation
+* Loading, empty, and error states
+* Toast notifications
+* Dark mode
 
-🎮 Interactive 3D product viewer built with React Three Fiber
+### ⚡ Advanced State Management
 
-♿ Keyboard-accessible 3D controls and screen-reader support
+Complex application flows are modeled explicitly rather than being scattered across component state.
 
-📱 Mobile-focused WebGL performance and context-loss recovery
+* **XState** for cart behavior
+* **XState** for checkout workflow
+* Guarded state transitions
+* Optimistic updates
+* Automatic rollback
+* Snapshot restoration
+* Stock validation during checkout
 
-📦 Route-based code splitting and bundle-size budgets
+### 🔄 Real-Time Inventory Synchronization
 
-🖼️ Responsive image loading with srcset, sizes, lazy loading, and preload/preconnect hints
+Because this project does not have a real backend, cross-tab synchronization is implemented through a `BroadcastChannel`-backed abstraction that exposes a WebSocket-shaped interface.
 
-📲 Installable/offline-capable PWA with Workbox
+Features include:
 
-🧪 Unit and Storybook-story testing with Vitest
+* Connection state management
+* Reconnection with exponential backoff
+* Cross-tab inventory updates
+* Resynchronization after reconnection
+* Checkout stock protection
+* Automated tests for asynchronous behavior
 
-🚦 Lighthouse CI with performance/accessibility regression checks
+This architecture intentionally separates the transport abstraction from the UI so a real WebSocket backend could replace the simulated transport later.
 
-🌙 Responsive UI with dark-mode support
+### 🧊 Interactive 3D Product Viewer
 
-What I Built
+Product detail pages include an optional 3D viewing mode built with:
 
-Week 1 — Foundation & Catalog
-
-Mock API using MSW
-
-Storybook-documented UI primitives
-
-Responsive product catalog
-
-Search and filtering
-
-Grid/list view
-
-Skeleton loaders
-
-Empty states
-
-Scoped error boundary
-
-Week 2 — Product Detail, Cart & Notifications
-
-Accessible product-detail page
-
-Roving-tabindex image gallery
-
-React Router
-
-XState-managed cart
-
-Guarded stock-limit transitions
-
-Validated cart drawer
-
-Decoupled toast notification system
-
-Week 3 — Optimistic UI & Checkout
-
-Optimistic cart updates with automatic rollback
-
-Pure, unit-tested performOptimisticUpdate helper
-
-Independent XState checkout machine
-
-Multi-step checkout flow
-
-Luhn-validated payment fields
-
-Comprehensive form validation
-
-Responsive testing that caught and fixed a checkout step-indicator overflow bug
-
-Week 4 — Real-Time Inventory
-
-The project does not have a real backend, so I did not pretend BroadcastChannel was a production WebSocket.
-
-Instead, I created a WebSocket-shaped InventorySocket abstraction backed by BroadcastChannel.
-
-It includes:
-
-Exponential-backoff reconnection
-
-Connection-status indicator
-
-Request/resync handshake
-
-Cross-tab inventory updates
-
-Deterministic automated tests
-
-Two-layer stock protection:
-
-Client-side UX validation
-
-Authoritative validation before checkout
-
-This approach keeps the application architecture replaceable: a real WebSocket transport could be introduced behind the same abstraction later.
-
-Week 5 — WebGL & 3D Product Viewer
-
-Interactive 3D viewer
-
-The catalog contains 51 mock products without individual 3D model files. Rather than presenting fictional models as real product assets, the viewer uses each product's actual image as a texture on a rotating box.
-
-Built with:
-
-React Three Fiber
-
-Three.js
-
-@react-three/drei
-
-OrbitControls
-
-Users can drag to orbit and scroll to zoom while switching between the existing photo gallery and the 3D view.
-
-Lazy loading
-
-The Three.js/R3F/drei bundle is loaded only when the user selects 3D View using React.lazy().
-
-A matched-dimension Viewer3DSkeleton prevents layout shift during loading.
-
-Two Suspense boundaries handle two separate asynchronous resources:
-
-Lazy-loaded viewer code
-
-Product texture image
-
-WebGL fallback
-
-Two safety layers are used:
-
-Preventive isWebGLAvailable() feature detection
-
-Runtime error boundary for failures after initial capability detection
-
-If WebGL is unavailable, the 3D option is hidden and the normal photo gallery remains available.
-
-Accessibility
+* React Three Fiber
+* Three.js
+* Drei
+* OrbitControls
 
 The viewer supports:
 
-Arrow-key camera movement
-
-+ / − zoom controls
-
-Keyboard navigation
-
-Screen-reader description
-
-Consistent camera math between mouse and keyboard interaction
-
-Mobile performance
-
-The viewer includes:
-
-Capped device pixel ratio: dpr={[1, 2]}
-
-low-power GPU hint
-
-webglcontextlost handling
-
-webglcontextrestored handling
-
-DevTools CPU-throttling verification
-
-Real-device verification
-
-Week 6 — Performance, PWA & Production Readiness
-
-Installable PWA
-
-vite-plugin-pwa generates:
-
-Web app manifest
-
-Workbox service worker
-
-Stale-while-revalidate strategy for mock /api/* routes
-
-Cache-first strategy for product images
-
-30-day image cache expiry
-
-Capped cache entries
-
-Persistent update prompt
-
-Background update checks
-
-The update prompt deliberately does not auto-dismiss because the user should control when the current application version is replaced.
-
-Route-based code splitting
-
-The following routes are lazy-loaded:
-
-CatalogPage
-
-ProductDetailPage
-
-CheckoutPage
-
-This prevents checkout-specific code from being downloaded when the user only visits the catalog.
-
-Bundle budgets
-
-.size-limit.cjs defines enforceable bundle-size budgets.
-
-Run:
-
-npm run size
-
-The production build also generates:
-
-dist/stats.html
-
-using rollup-plugin-visualizer so bundle composition can be inspected.
-
-Image optimization
-
-The Vite SPA uses manual responsive image handling through:
-
-src/utils/responsiveImage.js
-
-For Unsplash-hosted images:
-
-srcset
-
-sizes
-
-auto=format
-
-Responsive width parameters
-
-Lazy loading for non-critical images
-
-High fetch priority for key LCP candidates
-
-Preconnect hints
-
-iStock-hosted images do not expose a documented resize parameter, so they intentionally fall back to a normal src rather than relying on an undocumented API.
-
-Lighthouse CI
-
-lighthouserc.cjs:
-
-Builds the production application
-
-Serves it through vite preview
-
-Runs three Lighthouse passes
-
-Reports the median result
-
-Checks performance
-
-Checks accessibility
-
-Checks LCP
-
-Checks CLS
-
-Checks TBT
-
-Checks responsive-image audits
-
-Warns on best-practices and SEO regressions
-
-Run:
-
-npm run lighthouse
-
-🧠 Architecture Decisions
-
-XState for cart and checkout
-
-The cart is primarily guard-heavy, while checkout is genuinely sequential. Using separate state machines keeps each workflow explicit instead of forcing unrelated states into one global model.
-
-Optimistic updates with rollback
-
-Cart interactions update immediately for responsive UX. If the operation fails, the previous snapshot is restored automatically.
-
-WebSocket-shaped abstraction
-
-InventorySocket intentionally separates the application from the transport. BroadcastChannel provides cross-tab synchronization today, while the interface leaves room for a real WebSocket backend later.
-
-Honest 3D placeholder
-
-The 3D viewer uses each product's real image as a texture on a generic box because the mock catalog does not contain product-specific 3D assets.
-
-Two Suspense boundaries
-
-The 3D viewer's code and product texture are different asynchronous resources with different lifetimes, so they are handled independently.
-
-Preventive capability detection + runtime safety
-
-WebGL support is checked before exposing the feature and the existing error boundary remains available for runtime failures.
-
-Mobile performance over visual excess
-
-The viewer uses established performance safeguards such as DPR capping, low-power GPU hints, and WebGL context recovery rather than adding expensive effects with uncertain benefit.
-
-🛠️ Tech Stack
-
-Technology
-
-Purpose
-
-React
-
-UI architecture
-
-Vite
-
-Fast development and production builds
-
-Tailwind CSS v4
-
-Styling and responsive UI
-
-MSW
-
-Mock REST API/network interception
-
-React Router v7
-
-Client-side routing
-
-XState
-
-Cart and checkout state machines
-
-BroadcastChannel
-
-Cross-tab inventory synchronization
-
-Three.js
-
-3D rendering
-
-React Three Fiber
-
-Declarative Three.js integration
-
-drei
-
-Three.js/R3F helpers
-
-Vitest
-
-Unit and component/story tests
-
-Storybook
-
-UI component documentation/testing
-
-Playwright
-
-Browser automation
-
-vite-plugin-pwa / Workbox
-
-PWA and service-worker support
-
-rollup-plugin-visualizer
-
-Bundle analysis
-
-size-limit
-
-Bundle-size budgets
-
-Lighthouse CI
-
-Performance and quality regression checks
-
-📁 Project Structure
-
+* Mouse orbit controls
+* Scroll zoom
+* Keyboard controls
+* WebGL capability detection
+* Runtime error fallback
+* Screen-reader guidance
+* Mobile-oriented rendering optimizations
+* WebGL context-loss recovery
+
+The project uses product photography as textures on a generic 3D object because the mock catalog does not contain real product-specific 3D models.
+
+### 🚀 Performance Engineering
+
+Performance was treated as an architectural concern rather than a final optimization pass.
+
+Implemented techniques include:
+
+* Route-based lazy loading
+* React `Suspense`
+* Deferred 3D dependencies
+* Responsive image `srcset`
+* `sizes` attributes
+* Lazy loading for non-critical images
+* High-priority loading for LCP candidates
+* CDN preconnect hints
+* Bundle-size budgets
+* Rollup bundle visualization
+* Lighthouse CI
+* PWA caching strategies
+
+### 📱 Progressive Web App
+
+The application includes PWA capabilities through `vite-plugin-pwa` and Workbox.
+
+Implemented features:
+
+* Web app manifest
+* Service worker
+* Installable application
+* Runtime caching
+* Image caching
+* API caching
+* Update detection
+* User-controlled application updates
+
+### ♿ Accessibility
+
+Accessibility is considered throughout the application rather than treated as a single audit step.
+
+Examples include:
+
+* Keyboard-accessible controls
+* Focus management
+* Accessible image gallery navigation
+* Screen-reader descriptions
+* Accessible loading/error states
+* Semantic UI primitives
+* WebGL fallback behavior
+* Lighthouse accessibility validation
+
+---
+
+## Technology Stack
+
+| Technology        | Purpose                                  |
+| ----------------- | ---------------------------------------- |
+| React             | UI architecture                          |
+| Vite              | Development and production build tooling |
+| Tailwind CSS      | Styling and responsive design            |
+| React Router      | Client-side routing                      |
+| XState            | Complex state machines                   |
+| MSW               | Mock API layer                           |
+| React Three Fiber | React-based 3D rendering                 |
+| Three.js          | WebGL / 3D rendering                     |
+| Drei              | Three.js helper components               |
+| Vitest            | Unit testing                             |
+| Storybook         | Component development and documentation  |
+| Playwright        | Browser automation support               |
+| vite-plugin-pwa   | PWA and service worker generation        |
+| Workbox           | Runtime caching                          |
+| Lighthouse CI     | Performance and accessibility validation |
+| Size Limit        | Bundle-size enforcement                  |
+
+---
+
+## Architecture
+
+```text
 src/
 ├── components/
-│   └── product-detail/
-│       ├── ProductViewer3D.jsx
-│       ├── Viewer3DSkeleton.jsx
-│       └── Viewer3DFallback.jsx
-│
-├── utils/
-│   ├── webgl.js
-│   └── responsiveImage.js
-│
-├── realtime/
-│   ├── InventorySocket.js
-│   └── InventorySocket.test.js
+│   ├── catalog/
+│   ├── cart/
+│   ├── checkout/
+│   ├── inventory/
+│   ├── product-detail/
+│   ├── toast/
+│   └── ui/
 │
 ├── context/
 │   ├── CartContext.jsx
-│   ├── ToastContext.jsx
-│   └── InventoryContext.jsx
+│   ├── InventoryContext.jsx
+│   └── ToastContext.jsx
+│
+├── hooks/
 │
 ├── machines/
 │   ├── cartMachine.js
-│   ├── cartMachine.test.js
 │   └── checkoutMachine.js
 │
-├── hooks/
 ├── mocks/
+│   ├── browser.js
+│   ├── handlers.js
+│   └── data/
+│
 ├── pages/
-├── router.jsx
+│   ├── CatalogPage.jsx
+│   ├── ProductDetailPage.jsx
+│   └── CheckoutPage.jsx
+│
+├── realtime/
+│   └── InventorySocket.js
+│
+├── utils/
+│   ├── responsiveImage.js
+│   ├── webgl.js
+│   └── validators.js
+│
 ├── App.jsx
+├── router.jsx
 └── main.jsx
+```
 
-🚀 Setup
+---
 
-Prerequisites
+## Engineering Highlights
 
-Node.js 20+
+### Explicit State Machines
 
-npm
+Cart and checkout behavior are modeled as state machines instead of relying entirely on ad-hoc component state.
 
-Installation
+This makes guarded transitions, validation, rollback, and workflow states explicit and testable.
 
+### Optimistic UI
+
+Cart mutations update the interface immediately while retaining a previous snapshot for rollback if the operation fails.
+
+### Defensive Real-Time Architecture
+
+Inventory synchronization is separated behind an abstraction that can later be connected to a real WebSocket backend without rewriting the UI layer.
+
+### Progressive Enhancement
+
+The 3D viewer is optional.
+
+If WebGL is unavailable, the application falls back to the standard product gallery instead of making the entire product experience dependent on WebGL.
+
+### Performance-Aware Loading
+
+Large dependencies such as Three.js are not loaded with the initial application bundle.
+
+The 3D viewer is downloaded only when the user requests it.
+
+### Honest Infrastructure Boundaries
+
+The project deliberately distinguishes between simulated infrastructure and real infrastructure.
+
+| Area           | Current implementation       |
+| -------------- | ---------------------------- |
+| Product API    | MSW mock API                 |
+| Inventory sync | BroadcastChannel abstraction |
+| Payments       | Validation only              |
+| Product models | Textured generic 3D object   |
+| Database       | Not required                 |
+| Authentication | Not implemented              |
+| Backend        | Not implemented              |
+
+This keeps the project technically honest while demonstrating how the frontend architecture could evolve toward real services.
+
+---
+
+## Testing & Quality
+
+The project includes automated tests for critical behavior including:
+
+* Cart state transitions
+* Optimistic update rollback
+* Inventory synchronization
+* Reconnection behavior
+* Checkout validation
+* Storybook component behavior
+
+Run the test suite:
+
+```bash
+npm run test
+```
+
+Build the production application:
+
+```bash
+npm run build
+```
+
+Check bundle budgets:
+
+```bash
+npm run size
+```
+
+Run Lighthouse CI:
+
+```bash
+npm run lighthouse
+```
+
+Start Storybook:
+
+```bash
+npm run storybook
+```
+
+---
+
+## Performance Validation
+
+Lighthouse CI is configured to validate:
+
+* Performance
+* Accessibility
+* Largest Contentful Paint
+* Cumulative Layout Shift
+* Total Blocking Time
+* Responsive image usage
+* Offscreen image loading
+* Image sizing
+* Best practices
+* SEO
+
+The repository also contains bundle-size budgets and a Rollup visualization output for inspecting bundle composition.
+
+> Performance numbers should be regenerated on the machine/environment where the application will actually be evaluated. External image CDN availability can materially affect Lighthouse results.
+
+---
+
+## Getting Started
+
+### Requirements
+
+* Node.js 20+
+* npm
+
+### Installation
+
+```bash
 git clone https://github.com/m-talha-prog/storefront.git
 cd storefront
 npm install
+```
 
-Available commands
+### Development
 
-Command
-
-Description
-
+```bash
 npm run dev
+```
 
-Start the Vite development server
+The application will start through Vite and use MSW for the mock API.
 
+### Production Build
+
+```bash
 npm run build
-
-Create a production build and bundle visualization
-
 npm run preview
+```
 
-Preview the production build locally
+---
 
-npm run storybook
+## Available Scripts
 
-Start Storybook
+| Command              | Description                   |
+| -------------------- | ----------------------------- |
+| `npm run dev`        | Start Vite development server |
+| `npm run build`      | Create production build       |
+| `npm run preview`    | Preview production build      |
+| `npm run test`       | Run automated tests           |
+| `npm run storybook`  | Start Storybook               |
+| `npm run size`       | Validate bundle-size budgets  |
+| `npm run lighthouse` | Run Lighthouse CI             |
 
-npm run test
+---
 
-Run unit and Storybook-story tests
+## Known Limitations
 
-npm run size
+This project is intentionally frontend-focused.
 
-Check bundle-size budgets
+Current limitations include:
 
-npm run lighthouse
+* No production backend
+* No real payment processor
+* No authentication system
+* Inventory synchronization is limited to browser tabs
+* Checkout state is not persisted across refreshes
+* Product 3D visualization uses a generic textured object rather than real product models
+* Responsive image generation is optimized primarily for Unsplash-hosted images
+* Production performance depends on external image CDN availability
 
-Run the Lighthouse CI workflow
+These limitations are intentional boundaries of the current project rather than hidden dependencies.
 
-For browser-based testing, install the required Chromium binary if necessary:
+---
 
-npx playwright install chromium
+## Future Improvements
 
-📊 Performance
+A production version could extend the architecture with:
 
-The project includes a Lighthouse CI pipeline rather than treating performance as a one-time manual check.
+* Real REST or GraphQL backend
+* PostgreSQL database
+* Authentication and authorization
+* Server-side inventory management
+* WebSocket or SSE infrastructure
+* Persistent shopping carts
+* Stripe or another payment provider
+* Real product 3D models
+* Product reviews and ratings
+* Order management
+* Admin dashboard
+* CI/CD deployment pipeline
+* Error monitoring and analytics
 
-Run:
+---
 
-npm run lighthouse
+## Project Status
 
-## 📊 Performance Benchmarks
+**Status: Completed frontend engineering project**
 
-Generated with `npm run lighthouse`.
+The project demonstrates six progressive development stages:
 
-| Category | Score |
-|---|---:|
-| Performance | 99–100 |
-| Accessibility | 96 |
-| Best Practices | 96 |
-| SEO | 100 |
+1. Foundation & catalog
+2. Product detail, cart & notifications
+3. Optimistic UI & checkout
+4. Real-time inventory synchronization
+5. 3D product visualization
+6. Performance, PWA & production-readiness engineering
 
-Performance goals enforced by the project
+---
 
-Responsive images
+## Author
 
-Lazy loading of non-critical images
+**Malik Talha**
 
-High priority for key LCP images
+Computer Science | Frontend & AI Application Development
 
-Route-based code splitting
+GitHub: [@m-talha-prog](https://github.com/m-talha-prog)
 
-Lazy-loaded 3D dependencies
+---
 
-Bundle-size budgets
+## License
 
-PWA caching
-
-Lighthouse regression checks
-
-WebGL DPR limits
-
-Mobile context-loss recovery
-
-♿ Accessibility
-
-Accessibility is considered throughout the application:
-
-Keyboard-accessible interactions
-
-Roving tabindex image gallery
-
-Screen-reader descriptions
-
-Accessible product and cart controls
-
-Error states
-
-Loading states
-
-Responsive layouts
-
-Keyboard controls for the 3D viewer
-
-
-🧪 Testing & Verification
-
-Feature
-
-Verification
-
-3D viewer
-
-Product detail → 3D View → drag to orbit and scroll to zoom
-
-Lazy loading
-
-DevTools Network → confirm Three/R3F chunks load after opening 3D View
-
-WebGL fallback
-
-Temporarily force isWebGLAvailable() to return false
-
-Keyboard controls
-
-Focus viewer → use arrow keys and + / −
-
-Screen reader
-
-Navigate to the viewer with a screen reader enabled
-
-Mobile performance
-
-Device emulation + CPU throttling or a real phone
-
-Bundle size
-
-npm run size
-
-Lighthouse
-
-npm run lighthouse
-
-PWA
-
-Install the application from a supported browser and test offline behavior
-
-⚠️ Known Limitations
-
-This is a frontend-focused application with a mock backend, so the following limitations are intentional:
-
-The 3D viewer is a generic textured box rather than a real per-product 3D model.
-
-BroadcastChannel synchronizes inventory across tabs in the same browser, not across devices or real users.
-
-Checkout state does not persist across a page refresh.
-
-Payment fields perform realistic validation but are not connected to a real payment processor.
-
-Responsive srcset generation is available for Unsplash-hosted images; iStock-hosted images use a fixed source.
-
-A custom 3D canvas does not have a perfect standardized ARIA pattern; the implementation uses keyboard controls and an explicit screen-reader description.
-
-The mock API is intentionally client-side and is not a production inventory/payment backend.
-
-These limitations are documented deliberately rather than presenting prototype functionality as production infrastructure.
-
-🎯 What This Project Demonstrates
-
-This project goes beyond a static e-commerce UI and demonstrates practical frontend engineering skills in:
-
-React architecture
-
-State-machine design
-
-Async state handling
-
-Optimistic UI
-
-Error recovery
-
-Form validation
-
-Responsive design
-
-Accessibility
-
-Cross-tab communication
-
-WebGL integration
-
-Performance optimization
-
-Code splitting
-
-Bundle analysis
-
-PWA architecture
-
-Automated testing
-
-Lighthouse-based regression testing
-
-Production-oriented frontend development
-
-👨‍💻 Project Context
-
-Built as the final Storefront project for a Frontend Developer Internship at Parallax Labs.
-
-The project evolved across six development phases:
-
-Foundation → Catalog → Cart & Checkout → Real-Time Inventory → 3D Product Viewer → Performance, PWA & Production Readiness
-
-📄 License
-
-This project is intended as a portfolio/internship project.
+This project is available for educational and portfolio purposes.
